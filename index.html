@@ -1,0 +1,1406 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f4ef">
+  <title>quit-tip | One moment at a time</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1d2925;
+      --muted: #78827b;
+      --paper: #f2f4ef;
+      --white: #fffefa;
+      --green: #245c48;
+      --mint: #dcebe1;
+      --coral: #c96e50;
+      --line: #e7e9e2;
+      --screen: #f8f8f3;
+      --accent: var(--green);
+      --accent-soft: rgba(36, 92, 72, .12);
+      --toolbar-bg: rgba(255,254,250,.96);
+      --shadow: rgba(37, 48, 41, .22);
+      --warm-surface: #f4e7dc;
+      --warm-accent: #9c593c;
+      font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+    }
+
+    body[data-theme="sunset"] {
+      --ink: #2b1f1b;
+      --muted: #7a6768;
+      --paper: #f7f0ed;
+      --white: #fffaf7;
+      --green: #9d4f3d;
+      --mint: #f3d9d2;
+      --coral: #d7784d;
+      --line: #ead7d1;
+      --screen: #f9f4f1;
+      --accent: var(--green);
+      --accent-soft: rgba(157, 79, 61, .12);
+      --toolbar-bg: rgba(255,249,247,.96);
+      --warm-surface: #f5e1d8;
+      --warm-accent: #9d4f3d;
+    }
+
+    body[data-theme="midnight"] {
+      --ink: #eaf0f5;
+      --muted: #a3b1be;
+      --paper: #0d1721;
+      --white: #172634;
+      --green: #76b9a1;
+      --mint: #1d2a35;
+      --coral: #d88f69;
+      --line: #243848;
+      --screen: #101d2a;
+      --accent: var(--green);
+      --accent-soft: rgba(118, 185, 161, .15);
+      --toolbar-bg: rgba(17, 27, 36, .96);
+      --warm-surface: #26333d;
+      --warm-accent: #e4a480;
+      color-scheme: dark;
+    }
+
+    body[data-theme="lavender"] {
+      --ink: #2a2441;
+      --muted: #726d88;
+      --paper: #f5f1ff;
+      --white: #fffdfa;
+      --green: #5f4ca6;
+      --mint: #e8e0ff;
+      --coral: #c38b84;
+      --line: #e7defa;
+      --screen: #f7f3ff;
+      --accent: var(--green);
+      --accent-soft: rgba(95, 76, 166, .12);
+      --toolbar-bg: rgba(255,252,255,.96);
+      --warm-surface: #eee7fb;
+      --warm-accent: #6853a2;
+    }
+
+    body[data-theme="ocean"] {
+      --ink: #1d2b3a;
+      --muted: #718295;
+      --paper: #edf4f8;
+      --white: #fbfdff;
+      --green: #326d91;
+      --mint: #d7e8f1;
+      --coral: #c47b61;
+      --line: #dbe7ee;
+      --screen: #f4f8fb;
+      --accent: var(--green);
+      --accent-soft: rgba(50, 109, 145, .12);
+      --toolbar-bg: rgba(251,253,255,.96);
+      --warm-surface: #f3e7df;
+      --warm-accent: #9c624e;
+    }
+
+    body[data-theme="rose"] {
+      --ink: #38252d;
+      --muted: #88717a;
+      --paper: #f8f0f3;
+      --white: #fffafd;
+      --green: #8c4f68;
+      --mint: #f0dce5;
+      --coral: #c16f65;
+      --line: #eddde4;
+      --screen: #fbf5f8;
+      --accent: var(--green);
+      --accent-soft: rgba(140, 79, 104, .12);
+      --toolbar-bg: rgba(255,250,253,.96);
+      --warm-surface: #f4e4df;
+      --warm-accent: #98594e;
+    }
+
+    body[data-theme="sage"] {
+      --ink: #26342b;
+      --muted: #77877b;
+      --paper: #eff4ef;
+      --white: #fcfffc;
+      --green: #52775d;
+      --mint: #dce9dc;
+      --coral: #b9765d;
+      --line: #dfe9df;
+      --screen: #f5f9f4;
+      --accent: var(--green);
+      --accent-soft: rgba(82, 119, 93, .12);
+      --toolbar-bg: rgba(252,255,252,.96);
+      --warm-surface: #f1e8dc;
+      --warm-accent: #8a6048;
+    }
+
+    body[data-theme="sand"] {
+      --ink: #342d24;
+      --muted: #827668;
+      --paper: #f5f0e7;
+      --white: #fffdf8;
+      --green: #786143;
+      --mint: #eee4d2;
+      --coral: #bd7657;
+      --line: #e8dfd0;
+      --screen: #faf6ef;
+      --accent: var(--green);
+      --accent-soft: rgba(120, 97, 67, .13);
+      --toolbar-bg: rgba(255,253,248,.96);
+      --warm-surface: #f2e5d7;
+      --warm-accent: #916146;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 14% 12%, rgba(216, 229, 214, .72), transparent 34%),
+        radial-gradient(ellipse at 87% 82%, rgba(237, 216, 196, .56), transparent 32%),
+        var(--paper);
+    }
+
+    button { font: inherit; }
+    button:focus-visible, input:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(255px, 360px) minmax(300px, 390px);
+      justify-content: center;
+      align-items: center;
+      gap: clamp(42px, 8vw, 124px);
+      padding: 48px 28px;
+    }
+
+    .intro { max-width: 340px; animation: rise-in .7s ease-out both; }
+    .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 48px; }
+    .brand-mark {
+      width: 34px; height: 34px; display: grid; place-items: center;
+      border-radius: 12px; color: white; background: var(--green);
+      font: 700 20px/1 Georgia, serif;
+    }
+    .brand-name { font-size: 15px; font-weight: 700; letter-spacing: .03em; }
+    .eyebrow { color: var(--coral); font-size: 11px; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
+    h1 { margin: 14px 0 16px; max-width: 340px; font: 500 46px/.99 Georgia, "Times New Roman", serif; letter-spacing: 0; }
+    .intro-copy { color: #64716a; font-size: 15px; line-height: 1.65; margin: 0; max-width: 310px; }
+    .overview { margin-top: 37px; border-top: 1px solid rgba(43, 74, 58, .16); }
+    .overview-row { display: flex; gap: 15px; padding: 16px 0; border-bottom: 1px solid rgba(43, 74, 58, .16); }
+    .overview-number { color: var(--coral); font: 500 17px/1 Georgia, serif; padding-top: 2px; }
+    .overview-row strong { display: block; font-size: 13px; font-weight: 700; }
+    .overview-row span:last-child { color: #7b847d; display: block; margin-top: 4px; font-size: 12px; line-height: 1.4; }
+    .preview-label { color: #7a837c; font-size: 10px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; text-align: center; margin: 0 0 14px; }
+
+    .phone {
+      width: min(100%, 382px);
+      height: 790px;
+      padding: 10px;
+      position: relative;
+      border: 1px solid #343735;
+      border-radius: 54px;
+      background: #191c1b;
+      box-shadow: 0 30px 70px rgba(37, 48, 41, .22), 0 5px 16px rgba(37, 48, 41, .12);
+      animation: rise-in .8s .08s ease-out both;
+    }
+    .phone::before, .phone::after { content: ""; position: absolute; left: -3px; width: 3px; border-radius: 4px 0 0 4px; background: #656a66; }
+    .phone::before { top: 142px; height: 53px; }
+    .phone::after { top: 212px; height: 76px; }
+    .screen {
+      height: 100%; overflow: hidden; position: relative; border-radius: 44px;
+      background: var(--screen); display: flex; flex-direction: column;
+    }
+    .status { height: 39px; flex: 0 0 39px; display: flex; align-items: center; justify-content: space-between; padding: 0 25px; font-size: 11px; font-weight: 700; }
+    .island { position: absolute; z-index: 3; left: 50%; top: 10px; transform: translateX(-50%); width: 94px; height: 25px; border-radius: 20px; background: #191c1b; }
+    .status-icons { display: flex; align-items: center; gap: 5px; }
+    .signal { width: 14px; height: 10px; display: flex; align-items: end; gap: 1px; }
+    .signal i { display: block; width: 3px; border-radius: 2px; background: var(--ink); }
+    .signal i:nth-child(1) { height: 4px; }.signal i:nth-child(2) { height: 6px; }.signal i:nth-child(3) { height: 8px; }.signal i:nth-child(4) { height: 10px; }
+    .battery { width: 17px; height: 9px; border: 1px solid var(--ink); border-radius: 3px; position: relative; }
+    .battery::before { content: ""; position: absolute; inset: 1px 3px 1px 1px; border-radius: 1px; background: var(--ink); }
+    .battery::after { content: ""; position: absolute; width: 2px; height: 4px; right: -3px; top: 2px; border-radius: 0 2px 2px 0; background: var(--ink); }
+
+    .app-header { padding: 13px 22px 8px; display: flex; justify-content: space-between; align-items: center; }
+    .app-wordmark { font: 600 21px/1 Georgia, serif; letter-spacing: 0; }
+    .avatar { width: 33px; height: 33px; display: grid; place-items: center; border: 0; border-radius: 50%; color: var(--green); background: var(--accent-soft); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .scroll-area { overflow-y: auto; flex: 1; padding: 9px 18px 20px; scrollbar-width: none; }
+    .scroll-area::-webkit-scrollbar { display: none; }
+    .greeting { margin: 4px 4px 16px; }
+    .date-line { color: var(--muted); font-size: 11px; font-weight: 600; }
+    .greeting h2 { margin: 7px 0 4px; font: 500 25px/1.12 Georgia, serif; letter-spacing: 0; }
+    .greeting p { margin: 0; color: #7c857d; font-size: 12px; }
+    .streak {
+      position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between;
+      min-height: 113px; padding: 17px 18px; border-radius: 18px; color: white;
+      background: var(--green);
+    }
+    .streak::after { content: ""; position: absolute; width: 130px; height: 130px; right: 6px; top: -63px; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; box-shadow: 0 0 0 16px rgba(255,255,255,.035), 0 0 0 34px rgba(255,255,255,.025); }
+    .streak-label { color: #c6d9cd; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    .streak-count { margin-top: 6px; font: 500 30px/1 Georgia, serif; }
+    .streak-count small { font: 500 13px/1 "Avenir Next", Avenir, sans-serif; }
+    .streak-note { color: #d9e7dc; margin-top: 6px; font-size: 10px; }
+    .streak-sun { width: 47px; height: 47px; margin-right: 7px; border: 1px solid rgba(255,255,255,.42); border-radius: 50%; position: relative; display: grid; place-items: center; font: 23px/1 Georgia, serif; }
+    .section-heading { display: flex; align-items: baseline; justify-content: space-between; margin: 21px 3px 10px; }
+    .section-heading h3 { margin: 0; font: 600 16px/1.2 Georgia, serif; letter-spacing: 0; }
+    .section-heading span { color: var(--muted); font-size: 10px; }
+    .checkin { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 13px 13px 12px; }
+    .checkin-top { display: flex; gap: 11px; align-items: center; }
+    .checkin-symbol { flex: 0 0 36px; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 12px; background: var(--warm-surface); color: var(--warm-accent); font: 19px/1 Georgia, serif; }
+    .checkin-top strong { font-size: 12px; }.checkin-top p { margin: 3px 0 0; color: var(--muted); font-size: 10px; }
+    .moods { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 13px; }
+    .mood {
+      min-width: 0; min-height: 49px; border: 1px solid #ebede7; border-radius: 11px;
+      color: var(--muted); background: var(--white); cursor: pointer; font-size: 9px;
+    }
+    .mood span { display: block; color: var(--ink); margin-bottom: 4px; font-size: 15px; }
+    .mood:hover, .mood.selected { border-color: var(--green); background: var(--accent-soft); color: var(--green); }
+    .urge-card { margin-top: 14px; padding: 15px; border-radius: 16px; background: var(--warm-surface); display: flex; align-items: center; gap: 10px; }
+    .urge-copy { flex: 1; min-width: 0; }
+    .urge-copy strong { display: block; font: 600 13px/1.2 Georgia, serif; }
+    .urge-copy p { margin: 4px 0 0; color: var(--muted); font-size: 10px; }
+    .urge-button { flex: 0 0 auto; border: 0; border-radius: 10px; padding: 9px 10px; background: var(--coral); color: white; font-size: 10px; font-weight: 700; cursor: pointer; }
+    .quote { margin: 17px 5px 2px; color: #7b827a; font: italic 12px/1.5 Georgia, serif; text-align: center; }
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0 12px; }
+    .stat-pill { padding: 12px 8px; border-radius: 14px; background: var(--white); border: 1px solid var(--line); text-align: center; }
+    .stat-pill .label { display: block; color: var(--muted); font-size: 8px; letter-spacing: .12em; text-transform: uppercase; }
+    .stat-pill strong { display: block; margin-top: 7px; font: 600 18px/1.1 Georgia, serif; }
+    .stat-pill strong.live-clean-time { font: 600 12px/1.2 "Avenir Next", Avenir, sans-serif; overflow-wrap: anywhere; }
+    .clean-summary { margin: 12px 0 14px; padding: 16px; border-radius: 16px; background: linear-gradient(180deg, #edf3ee, #dde8e0); border: 1px solid #dce7de; }
+    .clean-label { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .clean-duration { margin-top: 7px; font: 600 30px/1 Georgia, serif; color: var(--green); }
+    .clean-subtitle { margin-top: 5px; color: #587066; font-size: 10px; }
+    .achievement-stack { display: grid; gap: 8px; margin: 10px 0 18px; }
+    .achievement-card { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border-radius: 14px; border: 1px solid var(--line); background: var(--white); }
+    .achievement-card.unlocked { background: linear-gradient(180deg, #edf7ef, #e2efe4); border-color: #cfe1d2; }
+    .achievement-card.locked { opacity: 0.78; }
+    .achievement-badge { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: #e8f0e8; color: var(--green); font-weight: 700; }
+    .achievement-card.unlocked .achievement-badge { background: var(--green); color: white; }
+    .achievement-copy { flex: 1; min-width: 0; }
+    .achievement-copy strong { display: block; font-size: 11px; }
+    .achievement-copy span { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
+    .mini-stack { display: grid; gap: 9px; margin-top: 12px; }
+    .mini-card { padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--white); }
+    .mini-card strong { display: block; font-size: 11px; margin-bottom: 3px; }
+    .mini-card p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.45; }
+    .tool-grid { display: grid; gap: 9px; margin: 10px 0 0; }
+    .tool-card { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 12px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--white); color: var(--ink); cursor: pointer; }
+    .tool-card .row-mark { margin: 0; }
+    .tool-card .row-copy { min-width: 0; }
+    .tool-card .row-copy strong { font-size: 11px; }
+    .tool-card .row-copy p { font-size: 10px; }
+    .insight-bar { display: flex; align-items: end; gap: 7px; height: 74px; margin: 16px 0 14px; }
+    .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .bar-col span { color: var(--muted); font-size: 8px; }
+    .bar { width: 100%; border-radius: 999px 999px 8px 8px; background: linear-gradient(180deg, #d9eadc 0%, var(--green) 100%); min-height: 18px; }
+    .bar.half { background: linear-gradient(180deg, #ebf0ea 0%, #9bb8a4 100%); }
+    .bar.muted { background: linear-gradient(180deg, #efe8df 0%, #d5a385 100%); }
+    .overview-card { padding: 16px; border-radius: 16px; background: linear-gradient(180deg, #edf4ee 0%, #ddeae3 100%); border: 1px solid #dfe9e0; }
+    .overview-card strong { display: block; margin-bottom: 8px; font: 600 18px/1.1 Georgia, serif; }
+    .overview-card p { margin: 0; color: #56665e; font-size: 11px; line-height: 1.5; }
+    .contact-list { display: grid; gap: 8px; }
+    .contact-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); }
+    .contact-avatar { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--green); background: var(--accent-soft); }
+    .contact-item .meta { flex: 1; min-width: 0; }
+    .contact-item .meta strong { display: block; font-size: 11px; }
+    .contact-item .meta span { color: var(--muted); font-size: 10px; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }
+    .chip { padding: 7px 9px; border: 1px solid var(--line); border-radius: 999px; background: var(--accent-soft); color: var(--green); font-size: 9px; font-weight: 700; }
+    .theme-picker { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+    .theme-option { display: flex; align-items: center; gap: 8px; padding: 10px 9px; border-radius: 12px; border: 1px solid var(--line); background: var(--white); color: var(--ink); cursor: pointer; }
+    .theme-option.active { border-color: var(--green); background: var(--accent-soft); }
+    .theme-swatch { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+    .theme-option strong { font-size: 10px; }
+    .tabbar { display: grid; grid-template-columns: repeat(6, 1fr); min-height: 69px; padding: 8px 5px 5px; border-top: 1px solid var(--line); background: var(--toolbar-bg); }
+    .tab { border: 0; background: transparent; color: #939a92; font-size: 9px; cursor: pointer; }
+    .tab span { display: block; margin: 0 auto 5px; color: inherit; font: 20px/1 Georgia, serif; }
+    .tab.active { color: var(--green); font-weight: 700; }
+    .home-indicator { width: 112px; height: 4px; position: absolute; z-index: 3; bottom: 5px; left: 50%; transform: translateX(-50%); border-radius: 3px; background: #202321; }
+    .toast { position: absolute; z-index: 5; left: 50%; bottom: 83px; transform: translate(-50%, 12px); width: max-content; max-width: calc(100% - 32px); padding: 10px 14px; border-radius: 12px; color: white; background: #263d32; box-shadow: 0 4px 16px #1d292533; font-size: 11px; opacity: 0; pointer-events: none; transition: .2s ease; }
+    .toast.visible { opacity: 1; transform: translate(-50%, 0); }
+    .support-overlay { position: absolute; z-index: 4; inset: 0; display: none; flex-direction: column; justify-content: end; background: rgba(22, 32, 27, .35); }
+    .support-overlay.open { display: flex; }
+    .support-sheet { padding: 23px 22px 34px; border-radius: 25px 25px 0 0; background: var(--screen); animation: sheet-in .25s ease-out both; }
+    .sheet-handle { width: 34px; height: 4px; margin: -10px auto 18px; border-radius: 3px; background: #d5dad3; }
+    .support-sheet .eyebrow { font-size: 9px; }
+    .support-sheet h2 { margin: 8px 0; font: 500 25px/1.1 Georgia, serif; }
+    .support-sheet p { color: #737e75; font-size: 12px; line-height: 1.55; }
+    .breath { margin: 18px auto; width: 124px; height: 124px; display: grid; place-items: center; border: 1px solid #bdd0c0; border-radius: 50%; color: var(--green); background: #e5eee6; font: 15px Georgia, serif; animation: breathe 5s ease-in-out infinite; }
+    .sheet-actions { display: grid; gap: 8px; }
+    .sheet-actions button { min-height: 43px; border: 1px solid #dfe4dc; border-radius: 12px; background: white; color: var(--green); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .sheet-actions .close-support { background: var(--green); border-color: var(--green); color: white; }
+    .panel-title { margin: 9px 4px 4px; font: 500 25px/1.1 Georgia, serif; }
+    .panel-subtitle { margin: 0 4px 18px; color: var(--muted); font-size: 11px; }
+    .tool-row, .progress-row { display: flex; align-items: center; gap: 12px; padding: 14px 12px; margin-bottom: 8px; border: 1px solid var(--line); border-radius: 14px; background: var(--white); }
+    .row-mark { width: 35px; height: 35px; flex: 0 0 35px; display: grid; place-items: center; border-radius: 12px; color: var(--green); background: var(--accent-soft); font: 17px Georgia, serif; }
+    .row-copy { flex: 1; min-width: 0; }
+    .row-copy strong { font-size: 11px; }
+    .row-copy p { margin: 3px 0 0; color: var(--muted); font-size: 10px; }
+    .row-arrow { color: #89938b; font-size: 15px; }
+    .progress-card { padding: 18px; border-radius: 16px; color: white; background: var(--green); }
+    .progress-card span { color: #c6d9cd; font-size: 10px; }
+    .progress-card strong { display: block; margin-top: 7px; font: 500 27px Georgia, serif; }
+    .week { display: flex; justify-content: space-between; margin-top: 18px; }
+    .day { display: grid; gap: 6px; justify-items: center; color: #d9e7dc; font-size: 9px; }
+    .day i { width: 23px; height: 23px; display: grid; place-items: center; border: 1px solid #79988a; border-radius: 50%; font-style: normal; }
+    .day.done i { color: var(--green); background: #d6e5d9; border-color: #d6e5d9; }
+    .profile-card { padding: 16px; border-radius: 16px; background: var(--white); border: 1px solid var(--line); }
+    .profile-card strong { font: 500 17px Georgia, serif; }
+    .profile-card p { color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .social-card { padding: 13px; border: 1px solid var(--line); border-radius: 14px; background: var(--white); }
+    .social-card strong { display: block; font: 500 16px Georgia, serif; }
+    .social-card p { margin: 6px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .form-stack { display: grid; gap: 9px; }
+    .form-label { display: grid; gap: 5px; color: var(--muted); font-size: 10px; font-weight: 700; }
+    .form-label input, .form-label select { width: 100%; min-height: 40px; padding: 9px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--white); color: var(--ink); font: inherit; font-size: 11px; }
+    .theme-select { max-height: 40px; }
+    .form-label input[type="checkbox"] { width: 18px; min-height: 18px; accent-color: var(--green); }
+    .check-label { display: flex; align-items: center; gap: 8px; color: var(--ink); font-size: 11px; }
+    .reminder-note { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.45; }
+    .action-button { min-height: 40px; padding: 9px 12px; border: 1px solid var(--green); border-radius: 11px; background: var(--green); color: var(--screen); font-size: 11px; font-weight: 700; cursor: pointer; }
+    .action-button.secondary { background: var(--white); color: var(--green); }
+    .action-button.danger { background: #a64e43; border-color: #a64e43; color: white; }
+    .profile-choice { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); color: var(--ink); text-align: left; cursor: pointer; }
+    .profile-choice.active { border-color: var(--green); background: var(--accent-soft); }
+    .profile-choice .profile-choice-copy { flex: 1; min-width: 0; }
+    .profile-choice strong, .profile-choice small { display: block; }
+    .profile-choice strong { font-size: 11px; }
+    .profile-choice small { margin-top: 3px; color: var(--muted); font-size: 9px; }
+    .admin-warning { padding: 10px; border-radius: 10px; background: #f5e9dd; color: #715344; font-size: 9px; line-height: 1.45; }
+    .admin-row { display: flex; align-items: center; gap: 8px; padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); }
+    .admin-row strong { flex: 1; font-size: 10px; }
+    .admin-row button { padding: 7px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--ink); font-size: 9px; cursor: pointer; }
+    .security-note { margin: 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
+    .notice { margin: 17px 5px 0; color: #8a9189; font-size: 9px; line-height: 1.5; text-align: center; }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes sheet-in { from { transform: translateY(22px); opacity: .7; } to { transform: translateY(0); opacity: 1; } }
+    @keyframes breathe { 50% { transform: scale(1.09); background: #d8e8da; } }
+
+    @media (max-width: 760px) {
+      .page { display: flex; flex-direction: column; gap: 26px; padding: 27px 16px 36px; }
+      .intro { width: min(100%, 382px); max-width: 382px; }
+      .brand { margin-bottom: 27px; }
+      h1 { font-size: 35px; max-width: none; }
+      .intro-copy { max-width: 360px; font-size: 13px; }
+      .overview { display: none; }
+      .preview-label { margin-bottom: 10px; }
+      .phone { width: min(100%, 382px); height: min(790px, calc(100svh - 250px)); min-height: 610px; border-radius: 48px; padding: 9px; }
+      .screen { border-radius: 39px; }
+    }
+    @media (max-width: 380px) {
+      .phone { height: 690px; min-height: 0; }
+      .scroll-area { padding-inline: 13px; }
+      .urge-card { padding: 12px; gap: 7px; }
+      .urge-button { padding-inline: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="intro" aria-labelledby="page-title">
+      <div class="brand"><div class="brand-mark" aria-hidden="true">q</div><span class="brand-name">quit-tip</span></div>
+      <p class="eyebrow">A gentler kind of progress</p>
+      <h1 id="page-title">One moment<br>at a time.</h1>
+      <p class="intro-copy">A steady, private space for recovery. Check in with yourself, find support in a tough moment, and keep moving at your own pace.</p>
+      <div class="overview" aria-label="App overview">
+        <div class="overview-row"><span class="overview-number">01</span><div><strong>Start where you are</strong><span>A quick daily check-in, without judgment.</span></div></div>
+        <div class="overview-row"><span class="overview-number">02</span><div><strong>Pause the urge</strong><span>Grounding tools for the next few minutes.</span></div></div>
+        <div class="overview-row"><span class="overview-number">03</span><div><strong>Notice your progress</strong><span>Small steps count, especially the hard ones.</span></div></div>
+      </div>
+    </section>
+
+    <section class="device-preview" aria-label="quit-tip iPhone preview">
+      <p class="preview-label">Today · iPhone preview</p>
+      <div class="phone">
+        <div class="screen">
+          <div class="island" aria-hidden="true"></div>
+          <div class="status"><span id="status-clock">--:--</span><span class="status-icons"><span class="signal" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span aria-hidden="true">◔</span><span class="battery" aria-hidden="true"></span></span></div>
+          <header class="app-header"><div class="app-wordmark">quit-tip</div><button class="avatar" id="profile-shortcut" type="button" aria-label="Open profile">J</button></header>
+          <div class="scroll-area" id="screen-content" aria-live="polite"></div>
+          <nav class="tabbar" aria-label="Main navigation">
+            <button class="tab active" data-view="today"><span aria-hidden="true">⌂</span>Today</button>
+            <button class="tab" data-view="tools"><span aria-hidden="true">✳</span>Tools</button>
+            <button class="tab" data-view="progress"><span aria-hidden="true">↗</span>Progress</button>
+            <button class="tab" data-view="socials"><span aria-hidden="true">♡</span>Socials</button>
+            <button class="tab" data-view="you"><span aria-hidden="true">◯</span>You</button>
+            <button class="tab" data-view="admin"><span aria-hidden="true">⚙</span>Admin</button>
+          </nav>
+          <div class="home-indicator" aria-hidden="true"></div>
+          <div class="toast" id="toast" role="status"></div>
+          <div class="support-overlay" id="support-overlay" role="dialog" aria-modal="true" aria-labelledby="support-title">
+            <section class="support-sheet">
+              <div class="sheet-handle" aria-hidden="true"></div>
+              <p class="eyebrow">Let's take this slowly</p>
+              <h2 id="support-title">This moment will pass.</h2>
+              <p>You don't have to solve everything right now. Just give yourself a little space before your next choice.</p>
+              <div class="breath" aria-hidden="true">Breathe in</div>
+              <div class="sheet-actions">
+                <button type="button" id="grounding-button">Name 5 things around you</button>
+                <button type="button" class="close-support">I'm okay for now</button>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const content = document.querySelector("#screen-content");
+    const toast = document.querySelector("#toast");
+    const overlay = document.querySelector("#support-overlay");
+    const storageKey = "quit-tip-profiles-v1";
+    const legacyStorageKey = "quit-tip-state";
+    const defaultCleanStartedAt = Date.now() - (12 * 24 * 60 * 60 * 1000 + 8 * 60 * 60 * 1000 + 34 * 60 * 1000);
+    const adminPassword = "Recovery";
+    const themeCatalog = {
+      forest: { label: "Forest", swatch: "#245c48" },
+      sunset: { label: "Sunset", swatch: "#9d4f3d" },
+      midnight: { label: "Midnight", swatch: "#76b9a1" },
+      lavender: { label: "Lavender", swatch: "#5f4ca6" },
+      ocean: { label: "Ocean", swatch: "#326d91" },
+      rose: { label: "Rose", swatch: "#8c4f68" },
+      sage: { label: "Sage", swatch: "#52775d" },
+      sand: { label: "Warm Sand", swatch: "#786143" },
+      mist: { label: "Misty Blue", swatch: "#527b91", colors: { ink: "#233440", muted: "#718490", paper: "#edf4f6", surface: "#fbfeff", primary: "#527b91", highlight: "#c27b68", line: "#dce8eb", screen: "#f5f9fa", soft: "#dcebf0", warm: "#f3e7e1", warmAccent: "#956455" } },
+      citrus: { label: "Citrus Grove", swatch: "#687b32", colors: { ink: "#30351f", muted: "#7d8069", paper: "#f5f5e9", surface: "#fffef8", primary: "#687b32", highlight: "#d18448", line: "#e5e7d5", screen: "#fafaf1", soft: "#e8edcf", warm: "#f4e9d8", warmAccent: "#99633d" } },
+      berry: { label: "Berry", swatch: "#874b70", colors: { ink: "#392736", muted: "#887485", paper: "#f7eff5", surface: "#fffaff", primary: "#874b70", highlight: "#c56a63", line: "#ebdce7", screen: "#fbf5fa", soft: "#f0ddeb", warm: "#f4e4df", warmAccent: "#995a53" } },
+      plum: { label: "Plum", swatch: "#674b83", colors: { ink: "#30273a", muted: "#7e748b", paper: "#f3eff8", surface: "#fffaff", primary: "#674b83", highlight: "#c07a77", line: "#e5dced", screen: "#f8f4fb", soft: "#e9def1", warm: "#f4e6e5", warmAccent: "#93605e" } },
+      sky: { label: "Clear Sky", swatch: "#4b82b1", colors: { ink: "#213247", muted: "#718399", paper: "#edf4fa", surface: "#fbfdff", primary: "#4b82b1", highlight: "#d37d66", line: "#dce7f0", screen: "#f5f9fd", soft: "#dceaf5", warm: "#f5e8e2", warmAccent: "#9b6251" } },
+      teal: { label: "Sea Glass", swatch: "#328078", colors: { ink: "#213734", muted: "#6d8580", paper: "#edf6f3", surface: "#fbfffd", primary: "#328078", highlight: "#c47b61", line: "#d8e9e4", screen: "#f4faf7", soft: "#d8eee8", warm: "#f4e8df", warmAccent: "#95664f" } },
+      meadow: { label: "Meadow", swatch: "#61804d", colors: { ink: "#29352a", muted: "#778473", paper: "#f0f5eb", surface: "#fcfff9", primary: "#61804d", highlight: "#c87558", line: "#dfe8d8", screen: "#f7faf3", soft: "#e1ecd8", warm: "#f3e9dc", warmAccent: "#8f654b" } },
+      pine: { label: "Deep Pine", swatch: "#315b4b", colors: { dark: true, ink: "#eaf0eb", muted: "#a9b8ae", paper: "#17251f", surface: "#21342b", primary: "#83b59b", highlight: "#e19a72", line: "#344b3f", screen: "#1a2a23", soft: "#2b4738", warm: "#3d382d", warmAccent: "#e0ae82" } },
+      clay: { label: "Terracotta", swatch: "#a85d45", colors: { ink: "#392820", muted: "#88776c", paper: "#f7f0e9", surface: "#fffaf5", primary: "#a85d45", highlight: "#d18459", line: "#ebddd2", screen: "#fbf6ef", soft: "#f1dfd2", warm: "#f3e5d7", warmAccent: "#98603f" } },
+      cocoa: { label: "Cocoa", swatch: "#775849", colors: { ink: "#352a25", muted: "#81736b", paper: "#f4efeb", surface: "#fffaf6", primary: "#775849", highlight: "#c17b5d", line: "#e6dcd5", screen: "#f9f5f1", soft: "#eadfd7", warm: "#f1e4d8", warmAccent: "#8d6048" } },
+      monochrome: { label: "Monochrome", swatch: "#555b5a", colors: { ink: "#292e2d", muted: "#777d7b", paper: "#f0f1ef", surface: "#ffffff", primary: "#555b5a", highlight: "#89817b", line: "#e0e2e0", screen: "#f7f8f6", soft: "#e3e6e3", warm: "#ece9e5", warmAccent: "#6f6862" } },
+      noir: { label: "Noir", swatch: "#a6b0ab", colors: { ink: "#edf0ee", muted: "#aab2ae", paper: "#171b19", surface: "#242a27", primary: "#a6b0ab", highlight: "#d89a78", line: "#39413d", screen: "#1c211e", soft: "#343d38", warm: "#35312c", warmAccent: "#d7a17f" } },
+      coral: { label: "Coral Reef", swatch: "#c56558", colors: { ink: "#382927", muted: "#887572", paper: "#f8f0ed", surface: "#fffaf8", primary: "#c56558", highlight: "#df9a61", line: "#eddcd7", screen: "#fcf6f3", soft: "#f5dfda", warm: "#f6e8df", warmAccent: "#a3674f" } },
+      glacier: { label: "Glacier", swatch: "#568c9a", colors: { ink: "#23353a", muted: "#74888d", paper: "#edf5f6", surface: "#fbffff", primary: "#568c9a", highlight: "#c78369", line: "#dce9ea", screen: "#f4fafb", soft: "#dcecef", warm: "#f4e8e1", warmAccent: "#956856" } },
+      peach: { label: "Peach", swatch: "#bd785d", colors: { ink: "#3b2b26", muted: "#8b776e", paper: "#fbf1e9", surface: "#fffaf5", primary: "#bd785d", highlight: "#ce8e58", line: "#eeded2", screen: "#fdf7f0", soft: "#f6e2d4", warm: "#f6e8dc", warmAccent: "#9c6549" } },
+      orchid: { label: "Orchid", swatch: "#87609a", colors: { ink: "#33283a", muted: "#83748b", paper: "#f5eff7", surface: "#fffaff", primary: "#87609a", highlight: "#c77b79", line: "#e8ddec", screen: "#faf5fb", soft: "#eddef2", warm: "#f4e5e9", warmAccent: "#985f68" } },
+      cherry: { label: "Cherry Blossom", swatch: "#ad6076", colors: { ink: "#39272e", muted: "#88747a", paper: "#f8f0f2", surface: "#fffafd", primary: "#ad6076", highlight: "#cf8569", line: "#ecdde2", screen: "#fcf6f8", soft: "#f2dfe5", warm: "#f5e6e1", warmAccent: "#9a6554" } },
+      lemon: { label: "Lemon Cream", swatch: "#8a7a32", colors: { ink: "#37331f", muted: "#85806b", paper: "#f8f5e8", surface: "#fffef7", primary: "#8a7a32", highlight: "#c77b4f", line: "#eae4cf", screen: "#fcfaef", soft: "#f0eacb", warm: "#f5e8d9", warmAccent: "#996241" } },
+      alpine: { label: "Alpine", swatch: "#52776e", colors: { ink: "#263632", muted: "#74827e", paper: "#eef3f1", surface: "#fbfffd", primary: "#52776e", highlight: "#c17d61", line: "#dce6e2", screen: "#f6f9f7", soft: "#deebe5", warm: "#f2e7df", warmAccent: "#93644f" } },
+      twilight: { label: "Twilight", swatch: "#566b9d", colors: { ink: "#282d40", muted: "#777f98", paper: "#f0f1f8", surface: "#fbfbff", primary: "#566b9d", highlight: "#c58072", line: "#dfe2ef", screen: "#f7f7fc", soft: "#e2e5f3", warm: "#f2e5e2", warmAccent: "#96645b" } }
+    };
+    const starterProfile = {
+      id: "you",
+      name: "You",
+      goal: "Working toward a life that feels more like yours.",
+      cleanStartedAt: defaultCleanStartedAt,
+      theme: "forest",
+      mood: "",
+      tab: "today"
+    };
+    let profiles = [];
+    let activeProfileId = "";
+    let socialProfiles = [];
+    let publishedSocialProfiles = [];
+    let pendingEncryptedProfiles = null;
+    let adminUnlocked = false;
+    let toastTimer;
+    let selectedMood = "";
+
+    function normalizeProfile(profile, index) {
+      if (!profile || typeof profile !== "object") profile = {};
+      const cleanStartedAt = Number(profile.cleanStartedAt) || Date.parse(profile.cleanStartedAt);
+      return {
+        id: typeof profile.id === "string" && profile.id ? profile.id : `profile-${index + 1}`,
+        name: typeof profile.name === "string" && profile.name.trim() ? profile.name.trim() : `Person ${index + 1}`,
+        goal: typeof profile.goal === "string" ? profile.goal : "",
+        shareToSocials: Boolean(profile.shareToSocials),
+        cleanStartedAt: Number.isFinite(cleanStartedAt) ? cleanStartedAt : Date.now(),
+        theme: themeCatalog[profile.theme] ? profile.theme : "forest",
+        mood: typeof profile.mood === "string" ? profile.mood : "",
+        moodCheckedAt: Number(profile.moodCheckedAt) || 0,
+        reminderEnabled: Boolean(profile.reminderEnabled),
+        reminderTime: typeof profile.reminderTime === "string" && /^\d{2}:\d{2}$/.test(profile.reminderTime) ? profile.reminderTime : "20:00",
+        lastReminderDate: typeof profile.lastReminderDate === "string" ? profile.lastReminderDate : "",
+        tab: typeof profile.tab === "string" ? profile.tab : "today"
+      };
+    }
+
+    function persistProfiles() {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify({ profiles, activeProfileId }));
+      } catch (error) {
+        showToast("Changes are active for this visit but could not be saved in this browser.");
+      }
+    }
+
+    function getStoredState() {
+      return profiles[0] || starterProfile;
+    }
+
+    function saveState(nextState) {
+      const index = profiles.findIndex((profile) => profile.id === activeProfileId);
+      if (index < 0) return;
+      profiles[index] = { ...profiles[index], ...nextState };
+      persistProfiles();
+    }
+
+    function createProfileId() {
+      return typeof crypto !== "undefined" && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `profile-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    }
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, (character) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+      })[character]);
+    }
+
+    function getLocalDateTimeValue(timestamp) {
+      const date = new Date(timestamp);
+      date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+      return date.toISOString().slice(0, 16);
+    }
+
+    function getLocalDateKey(date = new Date()) {
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function hasCheckedInToday(profile = getStoredState()) {
+      return profile.moodCheckedAt > 0 && getLocalDateKey(new Date(profile.moodCheckedAt)) === getLocalDateKey();
+    }
+
+    function getReminderStatus() {
+      if (!("Notification" in window)) return "Browser notifications are unavailable; in-app reminders work while this page is open.";
+      if (Notification.permission === "denied") return "Browser notifications are blocked. You can still get an in-app reminder while this page is open.";
+      if (Notification.permission === "granted") return "Browser notifications are allowed. Keep this page open for scheduled reminders.";
+      return "Allow notifications when you save to receive browser reminders. This page must remain open.";
+    }
+
+    async function requestReminderPermission() {
+      if (!("Notification" in window)) return "unavailable";
+      if (Notification.permission !== "default") return Notification.permission;
+      try {
+        return await Notification.requestPermission();
+      } catch (error) {
+        return "denied";
+      }
+    }
+
+    function checkDailyReminder() {
+      const profile = getStoredState();
+      if (!profile.reminderEnabled || hasCheckedInToday(profile)) return;
+      const now = new Date();
+      const reminderAt = new Date(now);
+      const [hours, minutes] = profile.reminderTime.split(":").map(Number);
+      reminderAt.setHours(hours, minutes, 0, 0);
+      const today = getLocalDateKey(now);
+      if (now < reminderAt || profile.lastReminderDate === today) return;
+
+      saveState({ lastReminderDate: today });
+      const message = "A gentle nudge to check in with yourself.";
+      if ("Notification" in window && Notification.permission === "granted") {
+        try {
+          const reminder = new Notification("Your quit-tip check-in", {
+            body: message,
+            tag: `quit-tip-checkin-${profile.id}-${today}`
+          });
+          reminder.onclick = () => {
+            window.focus();
+            render("today");
+            reminder.close();
+          };
+          showToast(message);
+          return;
+        } catch (error) {
+          showToast("Your check-in reminder is due. Browser notification could not be shown.");
+          return;
+        }
+      }
+      showToast(message);
+    }
+
+    function addSocialProfile(name, goal) {
+      const profile = normalizeSocialProfile({
+        id: createProfileId(),
+        name,
+        goal
+      }, socialProfiles.length);
+      if (!profile) {
+        showToast("Add a name and a description to share.");
+        return;
+      }
+      socialProfiles = mergeSocialProfiles(socialProfiles, [profile]);
+      saveSocialProfiles();
+      render("socials");
+      showToast(`${profile.name} was added to Socials.`);
+    }
+
+    function toSocialProfile(profile) {
+      return {
+        id: profile.id,
+        name: profile.name,
+        goal: profile.goal
+      };
+    }
+
+    function normalizeSocialProfile(profile, index) {
+      if (!profile || typeof profile !== "object") return null;
+      const name = typeof profile.name === "string" ? profile.name.trim().slice(0, 40) : "";
+      const goal = typeof profile.goal === "string" ? profile.goal.trim().slice(0, 120) : "";
+      if (!name || !goal) return null;
+      return {
+        id: typeof profile.id === "string" && profile.id ? profile.id : `social-${index + 1}`,
+        name,
+        goal
+      };
+    }
+
+    function mergeSocialProfiles(existing, incoming) {
+      const merged = new Map(existing.map((profile) => [profile.id, profile]));
+      incoming.forEach((profile, index) => {
+        const safeProfile = normalizeSocialProfile(profile, index);
+        if (safeProfile) merged.set(safeProfile.id, safeProfile);
+      });
+      return Array.from(merged.values());
+    }
+
+    function saveSocialProfiles() {
+      try {
+        localStorage.setItem("quit-tip-socials-v1", JSON.stringify(socialProfiles));
+      } catch (error) {
+        showToast("Socials changes could not be saved in this browser.");
+      }
+    }
+
+    function downloadSocialProfiles() {
+      const ownProfile = getStoredState();
+      const sharedProfiles = mergeSocialProfiles(publishedSocialProfiles, socialProfiles);
+      const profilesToExport = mergeSocialProfiles(sharedProfiles, ownProfile.shareToSocials ? [toSocialProfile(ownProfile)] : [])
+        .filter((profile) => ownProfile.shareToSocials || profile.id !== ownProfile.id);
+      const file = new Blob([JSON.stringify({ version: 1, profiles: profilesToExport }, null, 2)], {
+        type: "application/json"
+      });
+      downloadFile(file, "socials.json");
+    }
+
+    async function initializeSocialProfiles() {
+      try {
+        const savedSocials = JSON.parse(localStorage.getItem("quit-tip-socials-v1") || "[]");
+        if (Array.isArray(savedSocials)) {
+          socialProfiles = savedSocials.map(normalizeSocialProfile).filter(Boolean);
+        }
+      } catch (error) {
+        showToast("Saved Socials data could not be read.");
+      }
+      try {
+        const response = await fetch("./socials.json");
+        if (!response.ok) throw new Error(`Could not load socials.json (${response.status}).`);
+        const directory = await response.json();
+        if (!Array.isArray(directory.profiles)) throw new Error("socials.json has an invalid format.");
+        publishedSocialProfiles = directory.profiles.map(normalizeSocialProfile).filter(Boolean);
+      } catch (error) {
+        showToast("Shared Socials could not be loaded. Showing saved entries only.");
+      }
+    }
+
+    function downloadProfiles() {
+      const file = new Blob([JSON.stringify({ version: 1, profiles }, null, 2)], { type: "application/json" });
+      downloadFile(file, "profiles-backup.json");
+    }
+
+    function downloadFile(file, fileName) {
+      const url = URL.createObjectURL(file);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function bytesToBase64(bytes) {
+      let binary = "";
+      bytes.forEach((byte) => { binary += String.fromCharCode(byte); });
+      return btoa(binary);
+    }
+
+    function base64ToBytes(value) {
+      return Uint8Array.from(atob(value), (character) => character.charCodeAt(0));
+    }
+
+    async function deriveProfilesKey(password, salt, iterations) {
+      const passwordMaterial = await crypto.subtle.importKey(
+        "raw",
+        new TextEncoder().encode(password),
+        "PBKDF2",
+        false,
+        ["deriveKey"]
+      );
+      return crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt, iterations, hash: "SHA-256" },
+        passwordMaterial,
+        { name: "AES-GCM", length: 256 },
+        false,
+        ["encrypt", "decrypt"]
+      );
+    }
+
+    async function encryptProfilesFile(password) {
+      if (!crypto.subtle) throw new Error("Secure encryption is unavailable. Use HTTPS or localhost.");
+      const iterations = 310000;
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const key = await deriveProfilesKey(password, salt, iterations);
+      const clearText = new TextEncoder().encode(JSON.stringify({ version: 1, profiles }, null, 2));
+      const ciphertext = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, clearText);
+      const encryptedFile = {
+        format: "quit-tip-encrypted-profiles",
+        version: 1,
+        cipher: "AES-GCM",
+        kdf: "PBKDF2-SHA-256",
+        iterations,
+        salt: bytesToBase64(salt),
+        iv: bytesToBase64(iv),
+        ciphertext: bytesToBase64(new Uint8Array(ciphertext))
+      };
+      downloadFile(
+        new Blob([JSON.stringify(encryptedFile, null, 2)], { type: "application/json" }),
+        "profiles.json"
+      );
+    }
+
+    async function decryptProfilesFile(encryptedFile, password) {
+      if (!crypto.subtle) throw new Error("Secure decryption is unavailable. Use HTTPS or localhost.");
+      if (encryptedFile.format !== "quit-tip-encrypted-profiles" ||
+          encryptedFile.cipher !== "AES-GCM" ||
+          encryptedFile.kdf !== "PBKDF2-SHA-256" ||
+          !Number.isInteger(encryptedFile.iterations) ||
+          encryptedFile.iterations < 100000 ||
+          encryptedFile.iterations > 1000000) {
+        throw new Error("This encrypted profiles file has an unsupported format.");
+      }
+      const salt = base64ToBytes(encryptedFile.salt);
+      const iv = base64ToBytes(encryptedFile.iv);
+      if (salt.length !== 16 || iv.length !== 12) throw new Error("The encrypted file is malformed.");
+      const key = await deriveProfilesKey(password, salt, encryptedFile.iterations);
+      const clearText = await crypto.subtle.decrypt(
+        { name: "AES-GCM", iv },
+        key,
+        base64ToBytes(encryptedFile.ciphertext)
+      );
+      const decoded = JSON.parse(new TextDecoder().decode(clearText));
+      if (!Array.isArray(decoded.profiles) || !decoded.profiles.length) {
+        throw new Error("The decrypted file contains no profiles.");
+      }
+      return decoded;
+    }
+
+    function renderProfilesPasswordForm() {
+      content.innerHTML = `<h2 class="panel-title">Unlock profiles</h2>
+        <p class="panel-subtitle">Enter the password used to encrypt this profiles.json file.</p>
+        <form class="form-stack" id="profiles-decrypt-form">
+          <label class="form-label">Password<input type="password" name="password" autocomplete="current-password" required></label>
+          <button class="action-button" type="submit">Unlock profiles</button>
+        </form>
+        <p class="security-note">The password is not saved. If you lose it, this encrypted file cannot be recovered. Profile content stored in this browser after unlocking is still saved in local browser storage.</p>`;
+    }
+
+    async function initializeProfiles() {
+      await initializeSocialProfiles();
+      let savedData;
+      try {
+        savedData = JSON.parse(localStorage.getItem(storageKey) || "null");
+      } catch (error) {
+        showToast("Saved profile data could not be read; loading starter profiles.");
+      }
+
+      if (savedData && Array.isArray(savedData.profiles) && savedData.profiles.length) {
+        const selectedProfile = savedData.profiles.find((profile) => profile.id === savedData.activeProfileId)
+          || savedData.profiles[0];
+        profiles = [normalizeProfile(selectedProfile, 0)];
+        activeProfileId = profiles[0].id;
+        persistProfiles();
+      } else {
+        try {
+          const legacyData = JSON.parse(localStorage.getItem(legacyStorageKey) || "null");
+          const response = await fetch("./profiles.json");
+          if (!response.ok) throw new Error(`Could not load profiles.json (${response.status}).`);
+          const profileData = await response.json();
+          if (profileData.format === "quit-tip-encrypted-profiles") {
+            pendingEncryptedProfiles = profileData;
+            renderProfilesPasswordForm();
+            return;
+          }
+          if (!Array.isArray(profileData.profiles) || !profileData.profiles.length) {
+            throw new Error("profiles.json does not contain any profiles.");
+          }
+          profiles = [normalizeProfile({ ...profileData.profiles[0], id: createProfileId() }, 0)];
+          if (legacyData) {
+            Object.assign(profiles[0], {
+              cleanStartedAt: Number(legacyData.cleanStartedAt) || profiles[0].cleanStartedAt,
+              theme: themeCatalog[legacyData.theme] ? legacyData.theme : profiles[0].theme,
+              mood: legacyData.mood || "",
+              tab: legacyData.tab || "today"
+            });
+          }
+          activeProfileId = profiles[0].id;
+          persistProfiles();
+        } catch (error) {
+          profiles = [normalizeProfile(starterProfile, 0)];
+          activeProfileId = profiles[0].id;
+          persistProfiles();
+          showToast("Starter profile loaded. Serve this folder over HTTP to load profiles.json.");
+        }
+      }
+      const state = getStoredState();
+      applyTheme(state.theme);
+      render(state.tab || "today");
+    }
+
+    function applyTheme(themeName) {
+      const safeTheme = themeCatalog[themeName] ? themeName : "forest";
+      document.body.dataset.theme = safeTheme;
+      document.body.style.colorScheme = safeTheme === "midnight" ||
+        (themeCatalog[safeTheme].colors && themeCatalog[safeTheme].colors.dark)
+        ? "dark"
+        : "light";
+      const palette = themeCatalog[safeTheme].colors;
+      const customProperties = [
+        "--ink", "--muted", "--paper", "--white", "--green", "--mint", "--coral",
+        "--line", "--screen", "--accent", "--accent-soft", "--toolbar-bg",
+        "--warm-surface", "--warm-accent"
+      ];
+      if (palette) {
+        Object.entries({
+          "--ink": palette.ink,
+          "--muted": palette.muted,
+          "--paper": palette.paper,
+          "--white": palette.surface,
+          "--green": palette.primary,
+          "--mint": palette.soft,
+          "--coral": palette.highlight,
+          "--line": palette.line,
+          "--screen": palette.screen,
+          "--accent": palette.primary,
+          "--accent-soft": `${palette.primary}20`,
+          "--toolbar-bg": `${palette.surface}f2`,
+          "--warm-surface": palette.warm,
+          "--warm-accent": palette.warmAccent
+        }).forEach(([property, value]) => document.body.style.setProperty(property, value));
+      } else {
+        customProperties.forEach((property) => document.body.style.removeProperty(property));
+      }
+      saveState({ theme: safeTheme });
+      document.querySelectorAll(".theme-option").forEach((button) => {
+        const active = button.dataset.theme === safeTheme;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+      const themeSelector = document.querySelector("#admin-theme-selector");
+      if (themeSelector) themeSelector.value = safeTheme;
+    }
+
+    function getGreeting() {
+      const hour = new Date().getHours();
+      if (hour < 12) return "Good morning";
+      if (hour < 17) return "Good afternoon";
+      return "Good evening";
+    }
+
+    function getCleanDurationMs() {
+      const state = getStoredState();
+      return Math.max(0, Date.now() - Number(state.cleanStartedAt));
+    }
+
+    function formatCleanDuration(ms) {
+      const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      if (days > 0) return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      if (hours > 0) return `${hours}h ${minutes}m ${seconds}s`;
+      if (minutes > 0) return `${minutes}m ${seconds}s`;
+      return `${seconds}s`;
+    }
+
+    function formatCleanDays(ms) {
+      const totalDays = Math.floor(ms / (24 * 60 * 60 * 1000));
+      return totalDays > 0 ? totalDays : 0;
+    }
+
+    function getRecentDays() {
+      const start = new Date(getStoredState().cleanStartedAt);
+      start.setHours(0, 0, 0, 0);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return Array.from({ length: 7 }, (_, index) => {
+        const date = new Date(today);
+        date.setDate(today.getDate() - 6 + index);
+        return {
+          label: date.toLocaleDateString("en-US", { weekday: "short" }),
+          complete: date >= start
+        };
+      });
+    }
+
+    function getAchievements() {
+      const elapsedHours = getCleanDurationMs() / 3600000;
+      const milestones = [24, 48, 72, 168, 720, 2160].map((hours) => ({
+        hours,
+        label: hours >= 24 && hours % 24 === 0 ? `${hours / 24} day${hours / 24 > 1 ? "s" : ""}` : `${hours} hours`,
+        labelShort: hours >= 24 && hours % 24 === 0 ? `${hours / 24}d` : `${hours}h`,
+        unlocked: elapsedHours >= hours,
+        remaining: Math.max(0, hours - elapsedHours)
+      }));
+      return milestones;
+    }
+
+    const moodOptions = [
+      { key: "Low", icon: "↓", label: "Low" },
+      { key: "Anxious", icon: "〰", label: "Anxious" },
+      { key: "Okay", icon: "·", label: "Okay" },
+      { key: "Hopeful", icon: "↗", label: "Hopeful" },
+      { key: "Strong", icon: "✳", label: "Strong" }
+    ];
+
+    const tools = [
+      { id: "ground", mark: "⌕", title: "Come back to the room", desc: "A calming 5-4-3-2-1 grounding exercise.", cta: "Start grounding" },
+      { id: "reach", mark: "♡", title: "Reach someone you trust", desc: "Text or call one person who makes you feel safe.", cta: "Pick a person" },
+      { id: "plan", mark: "✦", title: "Make the next step lighter", desc: "Choose one small action for the next 15 minutes.", cta: "Plan calmly" },
+      { id: "move", mark: "⟡", title: "Shift your body", desc: "Take a brief walk or stretch to reset your nervous system.", cta: "Move gently" }
+    ];
+
+    const todayView = () => {
+      const cleanDurationMs = getCleanDurationMs();
+      const cleanDays = formatCleanDays(cleanDurationMs);
+      const nextAchievement = getAchievements().find((achievement) => !achievement.unlocked);
+      return `
+        <div class="greeting"><h2>Welcome back, ${escapeHTML(getStoredState().name)}</h2><div class="date-line">${new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric", year: "numeric" })}</div><p>You're here. That's a good place to start.</p></div>
+        <section class="streak" aria-label="Recovery progress"><div><div class="streak-label">Showing up for yourself</div><div class="streak-count"><span class="live-clean-days">${cleanDays}</span> <small>days</small></div><div class="streak-note">Clean for <span class="live-clean-time">${formatCleanDuration(cleanDurationMs)}</span></div></div><div class="streak-sun" aria-hidden="true">✳</div></section>
+        <div class="section-heading"><h3>How are you, really?</h3><span>A small check-in</span></div>
+        <section class="checkin"><div class="checkin-top"><div class="checkin-symbol" aria-hidden="true">~</div><div><strong>Pick what feels closest</strong><p>There is no wrong answer.</p></div></div>
+          <div class="moods" role="group" aria-label="Choose how you feel">
+            ${moodOptions.map((mood) => `
+              <button class="mood ${selectedMood === mood.key ? "selected" : ""}" data-mood="${mood.key}" aria-pressed="${selectedMood === mood.key}"><span>${mood.icon}</span>${mood.label}</button>
+            `).join("")}
+          </div>
+        </section>
+        <div class="stat-grid" aria-label="Quick recovery stats">
+          <div class="stat-pill"><span class="label">Clean</span><strong class="live-clean-time">${formatCleanDuration(cleanDurationMs)}</strong></div>
+          <div class="stat-pill"><span class="label">Streak</span><strong><span class="live-clean-days">${cleanDays}</span>d</strong></div>
+          <div class="stat-pill"><span class="label">Next</span><strong class="live-next-milestone">${nextAchievement ? nextAchievement.labelShort : "Goal"}</strong></div>
+        </div>
+        <section class="urge-card"><div class="urge-copy"><strong>Having a hard moment?</strong><p>Let's get through the next few minutes.</p></div><button class="urge-button" id="urge-button">Help me pause</button></section>
+        <p class="quote">“Progress isn't always loud. Sometimes it's just staying.”</p>
+        <p class="notice">quit-tip is a support tool, not a substitute for medical care. If you may be in immediate danger, contact local emergency services.</p>`;
+    };
+
+    const views = {
+      today: todayView,
+      tools: () => `<h2 class="panel-title">Support in the next 10 minutes</h2><p class="panel-subtitle">Choose a small move that meets you where you are.</p>
+        <div class="tool-grid">
+          ${tools.map((tool) => `
+            <button class="tool-card" data-tool="${tool.id}">
+              <span class="row-mark">${tool.mark}</span>
+              <span class="row-copy"><strong>${tool.title}</strong><p>${tool.desc}</p></span>
+              <span class="row-arrow">›</span>
+            </button>
+          `).join("")}
+        </div>
+        <div class="section-heading"><h3>Quick recovery</h3></div>
+        <div class="mini-stack">
+          <div class="mini-card"><strong>Try this phrase</strong><p>“I do not need to solve this all at once. I just need the next right step.”</p></div>
+          <div class="mini-card"><strong>Body cue</strong><p>Drop your shoulders, unclench your jaw, and notice the floor beneath your feet.</p></div>
+        </div>
+        <p class="notice">If a moment feels overwhelming, use the pause tool and let a trusted person know you need a little support.</p>`,
+      progress: () => {
+        const cleanDurationMs = getCleanDurationMs();
+        const cleanDays = formatCleanDays(cleanDurationMs);
+        const achievementList = getAchievements();
+        const nextMilestone = achievementList.find((achievement) => !achievement.unlocked);
+
+        return `<h2 class="panel-title">Your progress</h2><p class="panel-subtitle">Every honest check-in is a step forward.</p>
+          <section class="progress-card"><span>YOUR CURRENT STREAK</span><strong><span class="live-clean-days">${cleanDays}</span> ${cleanDays === 1 ? "day" : "days"}</strong><div class="week">${getRecentDays().map((day) => `<div class="day ${day.complete ? "done" : ""}"><i>${day.complete ? "✓" : "·"}</i>${day.label}</div>`).join("")}</div></section>
+          <div class="clean-summary"><div class="clean-label">Clean time</div><div class="clean-duration live-clean-time">${formatCleanDuration(cleanDurationMs)}</div><div class="clean-subtitle">Since ${new Date(getStoredState().cleanStartedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</div></div>
+          <div class="achievement-stack">
+            ${achievementList.map((achievement) => `
+              <div class="achievement-card ${achievement.unlocked ? "unlocked" : "locked"}" data-achievement="${achievement.hours}">
+                <div class="achievement-badge">${achievement.unlocked ? "✓" : "○"}</div>
+                <div class="achievement-copy">
+                  <strong>${achievement.label}</strong>
+                  <span>${achievement.unlocked ? "Unlocked" : `${Math.ceil(achievement.remaining)}h left`}</span>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+          <div class="section-heading"><h3>Momentum</h3></div>
+          <div class="insight-bar" aria-label="Recovery trend">
+            <div class="bar-col"><span>Mon</span><div class="bar half" style="height:42%"></div></div>
+            <div class="bar-col"><span>Tue</span><div class="bar" style="height:56%"></div></div>
+            <div class="bar-col"><span>Wed</span><div class="bar" style="height:64%"></div></div>
+            <div class="bar-col"><span>Thu</span><div class="bar muted" style="height:48%"></div></div>
+            <div class="bar-col"><span>Fri</span><div class="bar" style="height:78%"></div></div>
+            <div class="bar-col"><span>Sat</span><div class="bar" style="height:84%"></div></div>
+            <div class="bar-col"><span>Sun</span><div class="bar" style="height:90%"></div></div>
+          </div>
+          <div class="overview-card"><strong>What stands out</strong><p>You are showing up more consistently, especially when you lean on a routine and a person who understands your goals.</p></div>
+          <div class="section-heading"><h3>Things worth noticing</h3></div>
+          <div class="progress-row"><span class="row-mark">✳</span><span class="row-copy"><strong>You checked in today</strong><p>Making space for how you feel matters.</p></span></div>
+          <div class="progress-row"><span class="row-mark">♡</span><span class="row-copy"><strong>Showing up is progress</strong><p>Your path does not need to look like anyone else's.</p></span></div>
+          <p class="notice live-next-milestone">${nextMilestone ? `Next milestone: ${nextMilestone.label}. Keep going.` : "You have reached every milestone in this path."}</p>`;
+      },
+      you: () => {
+        const state = getStoredState();
+        return `<h2 class="panel-title">Your profile</h2><p class="panel-subtitle">Only your profile is stored here.</p>
+        <div class="section-heading"><h3>Edit ${escapeHTML(state.name)}</h3></div>
+        <form class="form-stack" id="profile-edit-form">
+          <label class="form-label">Name<input name="name" maxlength="40" required value="${escapeHTML(state.name)}"></label>
+          <label class="form-label">Personal reminder<input name="goal" maxlength="120" value="${escapeHTML(state.goal)}"></label>
+          <label class="form-label">Recovery start date and time<input name="cleanStartedAt" type="datetime-local" required value="${getLocalDateTimeValue(state.cleanStartedAt)}"></label>
+          <div class="section-heading"><h3>Daily check-in reminder</h3></div>
+          <label class="check-label"><input type="checkbox" name="reminderEnabled" ${state.reminderEnabled ? "checked" : ""}> Remind me to check in each day</label>
+          <label class="form-label">Reminder time<input name="reminderTime" type="time" required value="${escapeHTML(state.reminderTime)}"></label>
+          <p class="reminder-note">${getReminderStatus()} Reminders are once per day and stop after you check in.</p>
+          <label class="check-label"><input type="checkbox" name="shareToSocials" ${state.shareToSocials ? "checked" : ""}> Add to Socials tab</label>
+          <p class="security-note">Sharing shows only your name and personal reminder. These details may be public if included in the website's socials.json.</p>
+          <button class="action-button" type="submit">Save profile</button>
+        </form>
+        <div class="section-heading"><h3>Your support circle</h3></div>
+        <div class="contact-list">
+          <div class="contact-item" data-tool="reach"><div class="contact-avatar">A</div><div class="meta"><strong>Ava</strong><span>Text to feel steadier</span></div><span class="row-arrow">›</span></div>
+          <div class="contact-item" data-tool="reach"><div class="contact-avatar">L</div><div class="meta"><strong>Leo</strong><span>Call for a quick check-in</span></div><span class="row-arrow">›</span></div>
+          <div class="contact-item" data-tool="reach"><div class="contact-avatar">D</div><div class="meta"><strong>Dr. Singh</strong><span>Care plan and guidance</span></div><span class="row-arrow">›</span></div>
+        </div>
+        <div class="chip-row"><span class="chip">Low-pressure</span><span class="chip">Boundaries</span><span class="chip">Self-trust</span><span class="chip">Gentle routines</span></div>
+      <div class="section-heading"><h3>Your data</h3></div>
+      <button type="button" class="action-button secondary" data-export-profiles>Download unencrypted profile backup</button>
+      <p class="security-note">This backup is readable by anyone who gets the file. Use the Admin tab to create a password-protected profiles.json.</p>
+      <div class="section-heading"><h3>A gentle reminder</h3></div>
+      <section class="profile-card"><strong>You are more than a number.</strong><p>Setbacks can be part of recovery. You deserve care and support at every point in your journey.</p></section>
+      <p class="notice">Your profile is stored only in this browser; download a JSON backup before clearing browser data. For medical guidance, talk with a qualified health professional.</p>`;
+    },
+    socials: () => {
+      const ownProfile = getStoredState();
+      const visibleProfiles = mergeSocialProfiles(
+        mergeSocialProfiles(publishedSocialProfiles, socialProfiles),
+        ownProfile.shareToSocials ? [toSocialProfile(ownProfile)] : []
+      ).filter((profile) => ownProfile.shareToSocials || profile.id !== ownProfile.id);
+      return `<h2 class="panel-title">Socials</h2>
+        <p class="panel-subtitle">A little encouragement from people working toward their goals.</p>
+        ${visibleProfiles.length
+          ? `<div class="contact-list">${visibleProfiles.map((profile) => `
+              <article class="social-card">
+                <strong>${escapeHTML(profile.name)}</strong>
+                <p>${escapeHTML(profile.goal)}</p>
+              </article>
+            `).join("")}</div>`
+          : `<section class="profile-card"><strong>No shared goals yet</strong><p>When people opt in and add their name and goal to the public socials.json directory, they will appear here.</p></section>`}
+        <form class="form-stack add-profile-form" style="margin-top:14px">
+          <label class="form-label">Name<input name="name" maxlength="40" required placeholder="Name"></label>
+          <label class="form-label">Description<input name="goal" maxlength="120" required placeholder="A goal to share"></label>
+          <button class="action-button secondary" type="submit">Add to Socials tab</button>
+        </form>
+        <button type="button" class="action-button secondary" data-export-socials style="margin-top:9px">Download socials.json</button>
+        <p class="security-note">This static website does not sync posts between visitors. Download the directory and publish it as socials.json to share entries with everyone. Social posts include only names and descriptions.</p>`;
+    },
+    admin: () => {
+      const state = getStoredState();
+      if (!adminUnlocked) {
+        return `<h2 class="panel-title">Admin access</h2><p class="panel-subtitle">Enter the demo password to manage your local profile.</p>
+          <form class="form-stack" id="admin-login-form">
+            <label class="form-label">Password<input type="password" name="password" autocomplete="current-password" required></label>
+            <button class="action-button" type="submit">Unlock admin</button>
+          </form>
+          <p class="admin-warning" style="margin-top:12px">Demo only: this password gate is client-side and is not secure access control. Do not store real or sensitive recovery records here.</p>`;
+      }
+      return `<h2 class="panel-title">Admin</h2><p class="panel-subtitle">Manage your profile saved in this browser.</p>
+        <div class="admin-warning">Local demo only. A real multi-user service needs server-side authentication and access controls.</div>
+        <p class="security-note">This browser contains one private profile. Socials only displays names and descriptions that people choose to share.</p>
+        <div class="section-heading"><h3>Theme selector</h3></div>
+        <label class="form-label">Choose a theme
+          <select class="theme-select" id="admin-theme-selector">
+            ${Object.entries(themeCatalog).map(([key, theme]) => `
+              <option value="${key}" ${state.theme === key ? "selected" : ""}>${theme.label}</option>
+            `).join("")}
+          </select>
+        </label>
+        <div class="section-heading"><h3>Import / export</h3></div>
+        <form class="form-stack" id="encrypt-profiles-form">
+          <label class="form-label">Encryption password<input type="password" name="password" autocomplete="new-password" minlength="12" required></label>
+          <label class="form-label">Confirm password<input type="password" name="confirmPassword" autocomplete="new-password" minlength="12" required></label>
+          <button class="action-button secondary" type="submit">Download encrypted profiles.json</button>
+        </form>
+        <p class="security-note">Use a unique password with at least 12 characters. The encrypted file can be public, but the password cannot. This does not encrypt data already saved in this browser.</p>
+        <form class="form-stack" id="import-profiles-form" style="margin-top:9px">
+          <label class="form-label">Import a profiles JSON backup<input type="file" name="profilesFile" accept="application/json,.json" required></label>
+          <button class="action-button secondary" type="submit">Import profiles</button>
+        </form>
+        <button type="button" class="action-button secondary" data-admin-lock style="margin-top:12px">Lock admin</button>`;
+    }
+    };
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("visible");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("visible"), 2400);
+    }
+
+    function render(view) {
+      if (!views[view]) view = "today";
+      const state = getStoredState();
+      selectedMood = state.mood;
+      applyTheme(state.theme);
+      content.innerHTML = views[view]();
+      document.querySelector("#profile-shortcut").textContent = state.name.charAt(0).toUpperCase();
+      document.querySelector("#profile-shortcut").setAttribute("aria-label", `Open ${state.name}'s profile`);
+      document.querySelectorAll(".tab").forEach(button => {
+        const active = button.dataset.view === view;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-current", active ? "page" : "false");
+      });
+      saveState({ tab: view });
+    }
+
+    function updateCleanClock() {
+      const statusClock = document.querySelector("#status-clock");
+      statusClock.textContent = new Intl.DateTimeFormat(undefined, {
+        hour: "numeric",
+        minute: "2-digit"
+      }).format(new Date());
+      statusClock.setAttribute("aria-label", new Date().toLocaleString());
+
+      const cleanDuration = getCleanDurationMs();
+      const cleanDays = formatCleanDays(cleanDuration);
+      content.querySelectorAll(".live-clean-time").forEach((element) => {
+        element.textContent = formatCleanDuration(cleanDuration);
+      });
+      content.querySelectorAll(".live-clean-days").forEach((element) => {
+        element.textContent = String(cleanDays);
+      });
+      const achievements = getAchievements();
+      content.querySelectorAll("[data-achievement]").forEach((element) => {
+        const achievement = achievements.find((item) => String(item.hours) === element.dataset.achievement);
+        if (!achievement) return;
+        element.classList.toggle("unlocked", achievement.unlocked);
+        element.classList.toggle("locked", !achievement.unlocked);
+        element.querySelector(".achievement-badge").textContent = achievement.unlocked ? "✓" : "○";
+        element.querySelector(".achievement-copy span").textContent = achievement.unlocked
+          ? "Unlocked"
+          : `${Math.ceil(achievement.remaining)}h left`;
+      });
+      const nextAchievement = achievements.find((achievement) => !achievement.unlocked);
+      content.querySelectorAll(".live-next-milestone").forEach((element) => {
+        element.textContent = nextAchievement
+          ? (element.classList.contains("notice") ? `Next milestone: ${nextAchievement.label}. Keep going.` : nextAchievement.labelShort)
+          : (element.classList.contains("notice") ? "You have reached every milestone in this path." : "Goal");
+      });
+      checkDailyReminder();
+    }
+
+    document.querySelector(".tabbar").addEventListener("click", event => {
+      const button = event.target.closest(".tab");
+      if (button) render(button.dataset.view);
+    });
+
+    document.querySelector("#profile-shortcut").addEventListener("click", () => render("you"));
+
+    content.addEventListener("click", event => {
+      const moodButton = event.target.closest(".mood");
+      if (moodButton) {
+        selectedMood = moodButton.dataset.mood;
+        saveState({ mood: selectedMood, moodCheckedAt: Date.now() });
+        content.querySelectorAll(".mood").forEach(button => {
+          const active = button === moodButton;
+          button.classList.toggle("selected", active);
+          button.setAttribute("aria-pressed", String(active));
+        });
+        showToast(`Check-in saved: feeling ${selectedMood.toLowerCase()}.`);
+      }
+
+      if (event.target.closest("[data-export-profiles]")) downloadProfiles();
+      if (event.target.closest("[data-export-socials]")) downloadSocialProfiles();
+      if (event.target.closest("[data-admin-lock]")) {
+        adminUnlocked = false;
+        render("admin");
+        showToast("Admin locked.");
+      }
+
+      if (event.target.closest("#urge-button") || event.target.closest("[data-open-support]")) {
+        overlay.classList.add("open");
+      }
+
+      const tool = event.target.closest("[data-tool]");
+      if (tool && (tool.dataset.tool === "ground" || tool.dataset.tool === "reach" || tool.dataset.tool === "plan" || tool.dataset.tool === "move")) {
+        overlay.classList.add("open");
+        if (tool.dataset.tool === "reach") {
+          showToast("Think of one person who helps you feel safe.");
+        }
+        if (tool.dataset.tool === "move") {
+          showToast("Shift your body gently. Let it be simple.");
+        }
+        if (tool.dataset.tool === "plan") {
+          showToast("Pick just one next step. Keep it tiny.");
+        }
+      }
+    });
+
+    content.addEventListener("change", (event) => {
+      const selector = event.target.closest("#admin-theme-selector");
+      if (!selector || !adminUnlocked || !themeCatalog[selector.value]) return;
+      applyTheme(selector.value);
+      showToast(`${themeCatalog[selector.value].label} theme selected.`);
+    });
+
+    content.addEventListener("submit", async (event) => {
+      const form = event.target;
+      if (!(form instanceof HTMLFormElement)) return;
+      event.preventDefault();
+
+      if (form.id === "profiles-decrypt-form") {
+        const password = String(new FormData(form).get("password") || "");
+        try {
+          const decoded = await decryptProfilesFile(pendingEncryptedProfiles, password);
+          profiles = [normalizeProfile(decoded.profiles[0], 0)];
+          activeProfileId = profiles[0].id;
+          pendingEncryptedProfiles = null;
+          persistProfiles();
+          const state = getStoredState();
+          applyTheme(state.theme);
+          render(state.tab || "today");
+          showToast("Profiles unlocked and saved in this browser.");
+        } catch (error) {
+          form.reset();
+          showToast(error.name === "OperationError"
+            ? "That password is incorrect or the encrypted file is damaged."
+            : error.message || "Could not decrypt profiles.json.");
+        }
+        return;
+      }
+
+      if (form.id === "admin-login-form") {
+        const password = new FormData(form).get("password");
+        if (password === adminPassword) {
+          adminUnlocked = true;
+          render("admin");
+          showToast("Admin unlocked for this visit.");
+        } else {
+          form.reset();
+          showToast("That password did not match.");
+        }
+        return;
+      }
+
+      if (form.id === "encrypt-profiles-form") {
+        const values = new FormData(form);
+        const password = String(values.get("password") || "");
+        const confirmPassword = String(values.get("confirmPassword") || "");
+        if (password.length < 12) {
+          showToast("Use an encryption password with at least 12 characters.");
+          return;
+        }
+        if (password !== confirmPassword) {
+          showToast("The encryption passwords do not match.");
+          return;
+        }
+        try {
+          await encryptProfilesFile(password);
+          form.reset();
+          showToast("Encrypted profiles.json downloaded. Keep your password safe.");
+        } catch (error) {
+          showToast(error.message || "Could not encrypt the profiles file.");
+        }
+        return;
+      }
+
+      if (form.id === "profile-edit-form") {
+        const values = new FormData(form);
+        const name = String(values.get("name") || "").trim();
+        const goal = String(values.get("goal") || "").trim();
+        const cleanStartedAt = new Date(String(values.get("cleanStartedAt") || "")).getTime();
+        const reminderEnabled = form.elements.reminderEnabled.checked;
+        const reminderTime = String(values.get("reminderTime") || "");
+        const shareToSocials = form.elements.shareToSocials.checked;
+        if (shareToSocials && !goal) {
+          showToast("Add a personal reminder before sharing your profile to Socials.");
+          return;
+        }
+        if (!name || !Number.isFinite(cleanStartedAt) || cleanStartedAt > Date.now()) {
+          showToast("Enter a name and a valid recovery start time that is not in the future.");
+          return;
+        }
+        if (!/^\d{2}:\d{2}$/.test(reminderTime)) {
+          showToast("Choose a valid daily reminder time.");
+          return;
+        }
+        if (reminderEnabled) await requestReminderPermission();
+        saveState({ name, goal, cleanStartedAt, reminderEnabled, reminderTime, shareToSocials });
+        socialProfiles = shareToSocials
+          ? mergeSocialProfiles(socialProfiles, [toSocialProfile(getStoredState())])
+          : socialProfiles.filter((profile) => profile.id !== getStoredState().id);
+        saveSocialProfiles();
+        render("you");
+        showToast(reminderEnabled
+          ? `Profile saved. Your daily reminder is set for ${reminderTime}.`
+          : "Profile details saved.");
+        if (reminderEnabled) checkDailyReminder();
+        return;
+      }
+
+      if (form.classList.contains("add-profile-form")) {
+        const values = new FormData(form);
+        const name = String(values.get("name") || "").trim();
+        if (!name) {
+          showToast("Enter a name for the new profile.");
+          return;
+        }
+        addSocialProfile(name, String(values.get("goal") || "").trim());
+        return;
+      }
+
+      if (form.id === "import-profiles-form") {
+        const file = new FormData(form).get("profilesFile");
+        if (!(file instanceof File)) {
+          showToast("Choose a profiles JSON file to import.");
+          return;
+        }
+        try {
+          const imported = JSON.parse(await file.text());
+          if (!Array.isArray(imported.profiles) || !imported.profiles.length) {
+            throw new Error("The backup must contain at least one profile.");
+          }
+          profiles = [normalizeProfile(
+            imported.profiles.find((profile) => profile.id === activeProfileId) || imported.profiles[0],
+            0
+          )];
+          activeProfileId = profiles[0].id;
+          persistProfiles();
+          render("admin");
+          showToast(`Imported ${profiles.length} profiles.`);
+        } catch (error) {
+          showToast(error instanceof SyntaxError ? "That file is not valid JSON." : error.message);
+        }
+      }
+    });
+
+    overlay.addEventListener("click", event => {
+      if (event.target === overlay || event.target.closest(".close-support")) overlay.classList.remove("open");
+      if (event.target.closest("#grounding-button")) {
+        const button = event.target.closest("#grounding-button");
+        const nextMessage = button.dataset.step === "1" ? "Look around. Name five things you see." : "Press your feet into the floor and notice the weight of your body.";
+        button.dataset.step = button.dataset.step === "1" ? "2" : "1";
+        button.textContent = nextMessage;
+        showToast("No rush. Take one slow breath.");
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") overlay.classList.remove("open");
+    });
+
+    initializeProfiles().then(() => {
+      updateCleanClock();
+      setInterval(updateCleanClock, 1000);
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) updateCleanClock();
+    });
+  </script>
+</body>
+</html>
